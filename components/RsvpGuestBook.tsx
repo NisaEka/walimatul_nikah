@@ -3,6 +3,16 @@ import { Send, User, MessageCircle } from 'lucide-react';
 import Section from './ui/Section';
 import FloralDivider from './ui/FloralDivider';
 import { GuestMessage } from '../types';
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "../firebase";
+
 
 const RsvpGuestBook: React.FC = () => {
   const [name, setName] = useState('');
@@ -12,38 +22,51 @@ const RsvpGuestBook: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const savedGuests = localStorage.getItem('wedding_guests');
-    if (savedGuests) {
-      setGuests(JSON.parse(savedGuests));
-    }
-  }, []);
+  const q = query(
+    collection(db, "rsvps"),
+    orderBy("createdAt", "desc")
+  );
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name || !message) return;
+  const unsub = onSnapshot(q, (snapshot) => {
+    const data = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as GuestMessage[];
 
-    setIsSubmitting(true);
+    setGuests(data);
+  });
 
-    const newGuest: GuestMessage = {
-      id: Date.now().toString(),
+  return () => unsub();
+}, []);
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!name || !message) return;
+
+  setIsSubmitting(true);
+
+  try {
+    await addDoc(collection(db, "rsvps"), {
       name,
       message,
       attendance,
-      date: new Date().toLocaleDateString('id-ID'),
-    };
+      createdAt: serverTimestamp(),
+    });
 
-    setTimeout(() => {
-      const updatedGuests = [newGuest, ...guests];
-      setGuests(updatedGuests);
-      localStorage.setItem('wedding_guests', JSON.stringify(updatedGuests));
-      
-      setName('');
-      setMessage('');
-      setAttendance('hadir');
-      setIsSubmitting(false);
-      alert("Terima kasih atas konfirmasi dan doa restunya!");
-    }, 1000);
-  };
+    setName('');
+    setMessage('');
+    setAttendance('hadir');
+
+    alert("Terima kasih atas konfirmasi dan doa restunya 💙");
+  } catch (error) {
+    console.error(error);
+    alert("Gagal mengirim RSVP");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   return (
     <Section className="mb-20">
@@ -132,7 +155,10 @@ const RsvpGuestBook: React.FC = () => {
                     </span>
                   </div>
                   <p className="text-slate-600 text-sm italic">"{guest.message}"</p>
-                  <p className="text-xs text-slate-400 mt-2 text-right">{guest.date}</p>
+                  <p className="text-xs text-slate-400 mt-2 text-right">
+                    {guest.createdAt?.toDate?.().toLocaleDateString("id-ID")}
+                  </p>
+
                 </div>
               ))}
             </div>

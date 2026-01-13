@@ -51,34 +51,71 @@ function App() {
       {/* Main Content (Hidden until opened) */}
       <div className={`transition-opacity duration-1000 ${isOpen ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
 
-        <MusicPlayer autoPlay={isOpen} />
+        {/* <MusicPlayer autoPlay={isOpen} /> */}
 
         {/* Header/Intro */}
         <header className="relative pt-20 pb-20 text-center px-4 overflow-hidden">
 
           {/* Soft Blue Gradient Top */}
-          <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-blue-100/50 to-transparent z-[-1]"></div>
-
-          <Section delay={0.2}>
-            <p className="font-serif text-lg text-sage-dark mb-4 tracking-widest uppercase">The Wedding of</p>
-            <h1 className="font-script text-5xl md:text-6xl text-royal-blue mb-2">
-              {GROOM_NAME.split(' ')[1]} <span className="text-sky-400">&</span> {BRIDE_NAME.split(' ')[1]}
-            </h1>
-            <p className="text-sm tracking-widest uppercase text-sage-dark mt-4">01 . 01 . 2026</p>
-          </Section>
-
+          <div className="absolute top-0 left-0 w-full  "></div>
           {/* Floral Bottom Decoration */}
           <img
+            src="/walimatul_nikah/images/header.svg"
+            alt="Floral Decoration"
+            className={`
+               absolute
+               top-[-20px]
+               left-0
+               w-full
+               max-w-none
+               mix-blend-multiply
+               pointer-events-none
+               scale-y-[-1]
+            `}
+          />
+          <Section delay={0.2}>
+            <p className="font-serif text-lg text-sage-dark mb-4 tracking-widest uppercase">Walimatul nikah</p>
+            <h1 className="font-script text-5xl md:text-6xl text-royal-blue mb-2">
+              {GROOM_NAME.split(' ')[0]} <span className="text-sky-400">&</span> {BRIDE_NAME.split(' ')[0]}
+            </h1>
+            <p className="text-sm tracking-widest uppercase text-sage-dark mt-4">01 . 02 . 2026</p>
+          </Section>
+
+      
+         <img
             src="/walimatul_nikah/images/floral.svg"
             alt="Floral Decoration"
-            className="absolute bottom-[-20px] left-1/2 -translate-x-1/2 w-[320px] md:w-[420px] opacity-70 mix-blend-multiply pointer-events-none"
+            className={`
+               absolute
+               bottom-[-20px]
+               left-0
+               w-full
+               max-w-none
+               mix-blend-multiply
+               pointer-events-none
+            `}
           />
 
         </header>
 
         {/* Salam & Verse */}
-        <Section className="text-center">
+        <Section className="text-center pt-0 mt-0"> 
+          {/* <img
+            src="/walimatul_nikah/images/floral.svg"
+            alt="Floral Decoration"
+            className={`
+              
+               absolute
+               left-0
+               w-full
+               max-w-none
+               mix-blend-multiply
+               pointer-events-none
+               scale-y-[-1]
+            `}
+          /> */}
           {/* <FloralDivider /> */}
+          <div className="pt-16 md:pt-16"></div>
           <h2 className="font-arabic text-2xl md:text-3xl mb-4 text-royal-blue">السلام عليكم ورحمة الله وبركاته</h2>
           <p className="mb-8 italic text-sage-dark">
             "Maha Suci Allah yang telah menciptakan makhluk-Nya berpasang-pasangan.
@@ -89,14 +126,14 @@ function App() {
           <div className="flex flex-col md:flex-row justify-center items-center gap-12 my-12">
             <div className="text-center">
               <h3 className="font-script text-4xl text-royal-blue mb-2">{GROOM_NAME}</h3>
-              <p className="text-sm text-sage-dark">Putra dari Bpk. Fulan & Ibu Fulanah</p>
+              <p className="text-sm text-sage-dark">Putra dari Bpk. Ahmad Sidik & Ibu Umiyati</p>
             </div>
 
             <span className="font-script text-4xl text-sage-green">&</span>
 
             <div className="text-center">
               <h3 className="font-script text-4xl text-royal-blue mb-2">{BRIDE_NAME}</h3>
-              <p className="text-sm text-sage-dark">Putri dari Bpk. Alan & Ibu Alana</p>
+              <p className="text-sm text-sage-dark">Putri dari Alm Bpk. Baban Fahrurozi & Ibu Rina Risnawati</p>
             </div>
           </div>
 
@@ -135,9 +172,7 @@ function App() {
             <div className="text-white font-serif text-lg">
               {GROOM_NAME} & {BRIDE_NAME}
             </div>
-            <p className="text-xs text-slate-500 mt-12">
-              Digital Invitation
-            </p>
+            
           </div>
           {/* Simple footer florals */}
           <div className="absolute -bottom-10 -left-10 text-royal-blue opacity-10 text-9xl">❀</div>

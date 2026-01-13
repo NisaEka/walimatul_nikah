@@ -25,11 +25,11 @@ const Gift: React.FC = () => {
           <div className="flex justify-center mb-4 text-royal-blue">
             <CreditCard size={32} />
           </div>
-          <h3 className="font-serif text-lg font-bold text-slate-700">BCA</h3>
-          <p className="text-2xl font-mono text-sage-green my-2 tracking-wider">1234567890</p>
-          <p className="text-sm text-slate-500 mb-4">a.n Aisyah Humaira</p>
+          <h3 className="font-serif text-lg font-bold text-slate-700">BSI</h3>
+          <p className="text-2xl font-mono text-sage-green my-2 tracking-wider">7200937923</p>
+          <p className="text-sm text-slate-500 mb-4">a.n Fiqri Rizal Zulmi</p>
           <button
-            onClick={() => copyToClipboard('1234567890')}
+            onClick={() => copyToClipboard('7200937923')}
             className="text-xs flex items-center justify-center gap-2 w-full py-2 bg-slate-50 hover:bg-slate-100 rounded text-slate-600 transition-colors"
           >
             <Copy size={14} /> Salin Nomor
@@ -42,9 +42,9 @@ const Gift: React.FC = () => {
           <div className="flex justify-center mb-4 text-sky-400">
              <GiftIcon size={32} />
           </div>
-          <h3 className="font-serif text-lg font-bold text-slate-700">Dana / OVO</h3>
-          <p className="text-2xl font-mono text-sage-green my-2 tracking-wider">08123456789</p>
-          <p className="text-sm text-slate-500 mb-4">a.n Muhammad Ali</p>
+          <h3 className="font-serif text-lg font-bold text-slate-700">Dana / Gopay</h3>
+          <p className="text-2xl font-mono text-sage-green my-2 tracking-wider">089637578942</p>
+          <p className="text-sm text-slate-500 mb-4">a.n Nisa Eka Juliana</p>
           <button
             onClick={() => copyToClipboard('08123456789')}
             className="text-xs flex items-center justify-center gap-2 w-full py-2 bg-slate-50 hover:bg-slate-100 rounded text-slate-600 transition-colors"

@@ -51,7 +51,7 @@ const EventDetails: React.FC = () => {
           <div className="flex flex-col gap-4 text-sage-dark">
              <div className="flex items-center justify-center gap-2">
                 <Calendar className="text-royal-blue" size={20} />
-                <span className="font-bold">Minggu, 1 Januari 2026</span>
+                <span className="font-bold">Minggu, 1 Februari 2026</span>
              </div>
              <div className="flex items-center justify-center gap-2">
                 <Clock className="text-royal-blue" size={20} />

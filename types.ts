@@ -1,10 +1,11 @@
-export interface GuestMessage {
+export type GuestMessage = {
   id: string;
   name: string;
   message: string;
-  date: string;
   attendance: 'hadir' | 'tidak_hadir' | 'ragu';
-}
+  createdAt: any;
+};
+
 
 export interface CountdownTime {
   days: number;
