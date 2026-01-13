@@ -86,7 +86,7 @@ const Cover: React.FC<CoverProps> = ({ onOpen }) => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const guestId = params.get("id");
+    const guestId = params.get("guest");
 
     if (!guestId) return;
 

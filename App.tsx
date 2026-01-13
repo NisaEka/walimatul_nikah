@@ -126,7 +126,7 @@ function App() {
           <div className="flex flex-col md:flex-row justify-center items-center gap-12 my-12">
             <div className="text-center">
               <h3 className="font-script text-4xl text-royal-blue mb-2">{GROOM_NAME}</h3>
-              <p className="text-sm text-sage-dark">Putra dari Bpk. Ahmad Sidik & Ibu Umiyati</p>
+              <p className="text-sm text-sage-dark">Putra dari Bpk. Ahmad Sidik & Ibu Umiyani</p>
             </div>
 
             <span className="font-script text-4xl text-sage-green">&</span>
