@@ -13,6 +13,17 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 
+import { doc, getDoc } from "firebase/firestore";
+
+const getGuest = async (guestId: string) => {
+  const snap = await getDoc(doc(db, "guests", guestId));
+  if (!snap.exists()) return null;
+  return snap.data();
+};
+
+const params = new URLSearchParams(window.location.search);
+const guestId = params.get("guest");
+
 
 const RsvpGuestBook: React.FC = () => {
   const [name, setName] = useState('');
@@ -21,51 +32,79 @@ const RsvpGuestBook: React.FC = () => {
   const [guests, setGuests] = useState<GuestMessage[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+   useEffect(() => {
+    if (!guestId) return;
+
+    getGuest(guestId).then((guest) => {
+      if (guest?.name) {
+        setName(guest.name);
+      }
+    });
+  }, []);
+
   useEffect(() => {
-  const q = query(
-    collection(db, "rsvps"),
-    orderBy("createdAt", "desc")
-  );
+    const q = query(
+      collection(db, "rsvps"),
+      orderBy("createdAt", "desc")
+    );
 
-  const unsub = onSnapshot(q, (snapshot) => {
-    const data = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as GuestMessage[];
+    const unsub = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as GuestMessage[];
 
-    setGuests(data);
-  });
+      setGuests(data);
+    });
 
-  return () => unsub();
-}, []);
+    return () => unsub();
+  }, []);
+
+ 
+
 
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!name || !message) return;
+    e.preventDefault();
+    if (!message) return;
 
-  setIsSubmitting(true);
+    if (!guestId) {
+      alert("Link undangan tidak valid");
+      return;
+    }
 
-  try {
-    await addDoc(collection(db, "rsvps"), {
-      name,
-      message,
-      attendance,
-      createdAt: serverTimestamp(),
-    });
+    setIsSubmitting(true);
 
-    setName('');
-    setMessage('');
-    setAttendance('hadir');
+    try {
+      const guest = await getGuest(guestId);
 
-    alert("Terima kasih atas konfirmasi dan doa restunya 💙");
-  } catch (error) {
-    console.error(error);
-    alert("Gagal mengirim RSVP");
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+      if (!guest) {
+        alert("Data tamu tidak ditemukan");
+        return;
+      }
+
+      await addDoc(collection(db, "rsvps"), {
+        guestId,
+        guestName: (guest as any)?.name ?? name,
+        name,
+        message,
+        attendance,
+        createdAt: serverTimestamp(),
+      });
+
+      setMessage('');
+      setAttendance('hadir');
+
+      alert("Terimakasih 💙");
+    } catch (err) {
+      console.error(err);
+      alert("Gagal mengirim RSVP");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+
 
 
   return (
@@ -137,7 +176,7 @@ const RsvpGuestBook: React.FC = () => {
         {/* Guest List */}
         <div className="bg-blue-50/50 p-6 rounded-xl border border-white max-h-[500px] overflow-y-auto">
           <h3 className="font-serif text-xl mb-4 text-royal-blue border-b border-blue-200 pb-2">Doa Restu ({guests.length})</h3>
-          
+
           {guests.length === 0 ? (
             <p className="text-center text-slate-400 italic py-10">Belum ada ucapan. Jadilah yang pertama!</p>
           ) : (
@@ -146,11 +185,10 @@ const RsvpGuestBook: React.FC = () => {
                 <div key={guest.id} className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
                   <div className="flex justify-between items-start mb-2">
                     <h4 className="font-bold text-royal-blue">{guest.name}</h4>
-                    <span className={`text-xs px-2 py-1 rounded-full ${
-                      guest.attendance === 'hadir' ? 'bg-blue-100 text-blue-700' :
+                    <span className={`text-xs px-2 py-1 rounded-full ${guest.attendance === 'hadir' ? 'bg-blue-100 text-blue-700' :
                       guest.attendance === 'tidak_hadir' ? 'bg-red-100 text-red-700' :
-                      'bg-orange-100 text-orange-700'
-                    }`}>
+                        'bg-orange-100 text-orange-700'
+                      }`}>
                       {guest.attendance === 'hadir' ? 'Hadir' : guest.attendance === 'tidak_hadir' ? 'Berhalangan' : 'Ragu'}
                     </span>
                   </div>

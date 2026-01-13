@@ -5,48 +5,18 @@ import { MailOpen } from 'lucide-react';
 import { BRIDE_NAME, GROOM_NAME } from '../constants';
 import { getGuestById } from "../hooks/useGuest";
 
+import { getOrCreateGuest } from "../services/guestService";
+
 interface CoverProps {
   onOpen: () => void;
 }
 
-// Reusable Floral Cluster Component for Corners
-// const FloralCorner: React.FC<{ position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' }> = ({ position }) => {
+const params =
+  typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search)
+    : null;
 
-//   // Base rotation/position classes based on corner
-//   const positionClasses = {
-//     'top-left': 'top-0 left-0',
-//     'top-right': 'top-0 right-0 scale-x-[-1]', // Mirror horizontally for right side
-//     'bottom-left': 'bottom-0 left-0 scale-y-[-1]', // Mirror vertically
-//     'bottom-right': 'bottom-0 right-0 scale-[-1]', // Mirror both
-//   };
-
-//   return (
-//     <div className={`absolute ${positionClasses[position]} w-48 h-48 pointer-events-none z-20`}>
-//       {/* Leaves (Sage Green) */}
-//       <motion.div 
-//         className="absolute top-[-20px] left-[-20px] text-sage-green opacity-60 text-[8rem] font-serif leading-none"
-//         animate={{ rotate: [0, 2, 0] }} transition={{ duration: 5, repeat: Infinity }}
-//       >
-//         ❧
-//       </motion.div>
-//       <div className="absolute top-[20px] left-[60px] text-sage-dark opacity-40 text-[5rem] font-serif rotate-45">❧</div>
-
-//       {/* Blue Flowers (Layered for depth) */}
-//       <motion.div 
-//         className="absolute top-[-10px] left-[-10px] text-watercolor-blue opacity-80 text-[7rem] leading-none"
-//         animate={{ scale: [1, 1.05, 1] }} transition={{ duration: 4, repeat: Infinity }}
-//       >
-//         ❀
-//       </motion.div>
-//       <div className="absolute top-[30px] left-[40px] text-sky-400 opacity-60 text-[5rem]">❀</div>
-//       <div className="absolute top-[10px] left-[80px] text-royal-blue opacity-40 text-[3rem]">❀</div>
-
-//       {/* Accent buds */}
-//       <div className="absolute top-[90px] left-[10px] text-blue-300 text-4xl">.</div>
-//       <div className="absolute top-[10px] left-[120px] text-blue-300 text-4xl">.</div>
-//     </div>
-//   );
-// };
+const guestId = params?.get("guest");
 
 const FloralCorner: React.FC<{
   position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
@@ -84,18 +54,33 @@ const FloralCorner: React.FC<{
 const Cover: React.FC<CoverProps> = ({ onOpen }) => {
   const [guest, setGuest] = useState<any>(null);
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const guestId = params.get("guest");
+  // useEffect(() => {
+  //   if (!guestId) return;
 
+  //   getOrCreateGuest(guestId)
+  //     .then((guest) => {
+  //       console.log("Guest aktif:", guest);
+  //     })
+  //     .catch(console.error);
+
+  //   getGuestById(guestId).then((data) => {
+  //     console.log("Guest loaded:", data);
+  //     setGuest(data);
+  //   });
+
+  // }, []);
+
+  useEffect(() => {
     if (!guestId) return;
 
-    getGuestById(guestId).then((data) => {
-      console.log("Guest loaded:", data);
-      setGuest(data);
-    });
+    getOrCreateGuest(guestId)
+      .then((guest) => {
+        console.log("Guest aktif:", guest);
+        setGuest(guest); // ✅ WAJIB
+      })
+      .catch(console.error);
+  }, [guestId]);
 
-  }, []);
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center text-center p-6 bg-paper overflow-hidden">
@@ -142,7 +127,7 @@ const Cover: React.FC<CoverProps> = ({ onOpen }) => {
             Kepada
           </p>
           <p className="text-slate-400 font-sans text-sm tracking-widest uppercase">
-            {guest ? `${guest.title ?? ""} ${guest.name}` : "Tamu Undangan"}
+            {guest ? `${guest.title ?? ""} ${guest.name}` : ""}
           </p>
 
         </div>

@@ -51,7 +51,7 @@ function App() {
       {/* Main Content (Hidden until opened) */}
       <div className={`transition-opacity duration-1000 ${isOpen ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
 
-        {/* <MusicPlayer autoPlay={isOpen} /> */}
+        <MusicPlayer autoPlay={isOpen} />
 
         {/* Header/Intro */}
         <header className="relative pt-20 pb-20 text-center px-4 overflow-hidden">

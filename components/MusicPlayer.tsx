@@ -22,6 +22,7 @@ const MusicPlayer: React.FC<{ autoPlay: boolean }> = ({ autoPlay }) => {
       if (isPlaying) {
         audioRef.current.pause();
       } else {
+        audioRef.current.volume = 0.2;
         audioRef.current.play();
       }
       setIsPlaying(!isPlaying);

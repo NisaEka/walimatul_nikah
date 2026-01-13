@@ -42,11 +42,11 @@ const Gift: React.FC = () => {
           <div className="flex justify-center mb-4 text-sky-400">
              <GiftIcon size={32} />
           </div>
-          <h3 className="font-serif text-lg font-bold text-slate-700">Dana / Gopay</h3>
-          <p className="text-2xl font-mono text-sage-green my-2 tracking-wider">089637578942</p>
+          <h3 className="font-serif text-lg font-bold text-slate-700">Mandiri</h3>
+          <p className="text-2xl font-mono text-sage-green my-2 tracking-wider">1320026979410</p>
           <p className="text-sm text-slate-500 mb-4">a.n Nisa Eka Juliana</p>
           <button
-            onClick={() => copyToClipboard('08123456789')}
+            onClick={() => copyToClipboard('1320026979410')}
             className="text-xs flex items-center justify-center gap-2 w-full py-2 bg-slate-50 hover:bg-slate-100 rounded text-slate-600 transition-colors"
           >
             <Copy size={14} /> Salin Nomor
